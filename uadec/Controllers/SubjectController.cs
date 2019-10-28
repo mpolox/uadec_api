@@ -71,7 +71,7 @@ namespace uadec.Controllers
         }
 
         /// <summary>
-        /// Delete Subject
+        /// Delete Subject, updated comment
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
