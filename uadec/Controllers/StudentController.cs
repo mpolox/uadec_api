@@ -7,6 +7,7 @@ using Microsoft.Extensions.Logging;
 using uadec.Filters;
 using uadec.Models;
 using uadec.Repository;
+using uadec.BusinessLogic;
 
 namespace uadec.Controllers
 {
@@ -54,6 +55,10 @@ namespace uadec.Controllers
         [HttpPost]
         public ActionResult<Student> Add(Student model)
         {
+            if (model.Name == null)
+            {
+                return BadRequest("User name not defined");
+            }
             DbContext.Add(model);
             DbContext.SaveChanges();
             return model;
@@ -88,6 +93,23 @@ namespace uadec.Controllers
             DbContext.Students.Remove(deleteModel);
             DbContext.SaveChanges();
             return deleteModel;
+        }
+
+        [HttpGet]
+        [Route("FindUser")]
+        public ActionResult<List<Student>> FindUser(string userName)
+        {
+            if (userName == null)
+            {
+                return NotFound();
+            }
+
+            List<Student> usersFound = DbContext.Students.Where(s => 
+            (s.Name.IsEqualTo(userName) ||
+            s.LastName.IsEqualTo(userName) ||
+            s.LastNameMother.IsEqualTo(userName))).ToList();
+
+            return usersFound;
         }
     }
 }
