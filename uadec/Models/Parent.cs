@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace uadec.Models
 {
-    public class Student
+    public class Parent
     {
         public int Id { get; set; }
 
