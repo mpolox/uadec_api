@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "uadec", "uadec\uadec.csproj
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "uadecTest", "uadecTest\uadecTest.csproj", "{CCF493FD-D1BE-4DBE-A0CC-58FAEA8BDFF3}"
 EndProject
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "uadecDatabase", "uadecDatabase\uadecDatabase.sqlproj", "{2C585C77-130A-4809-ABA0-2CD1A8591748}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,12 @@ Global
 		{CCF493FD-D1BE-4DBE-A0CC-58FAEA8BDFF3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CCF493FD-D1BE-4DBE-A0CC-58FAEA8BDFF3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CCF493FD-D1BE-4DBE-A0CC-58FAEA8BDFF3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2C585C77-130A-4809-ABA0-2CD1A8591748}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2C585C77-130A-4809-ABA0-2CD1A8591748}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2C585C77-130A-4809-ABA0-2CD1A8591748}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{2C585C77-130A-4809-ABA0-2CD1A8591748}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2C585C77-130A-4809-ABA0-2CD1A8591748}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2C585C77-130A-4809-ABA0-2CD1A8591748}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
