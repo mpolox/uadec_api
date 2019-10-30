@@ -8,6 +8,9 @@ using uadec.Filters;
 using uadec.Models;
 using uadec.Repository;
 using uadec.BusinessLogic;
+using uadec.Helpers;
+using System.Data.SqlClient;
+using uadec.DTOs;
 
 namespace uadec.Controllers
 {
@@ -95,9 +98,14 @@ namespace uadec.Controllers
             return deleteModel;
         }
 
+        /// <summary>
+        /// Find student
+        /// </summary>
+        /// <param name="userName"></param>
+        /// <returns></returns>
         [HttpGet]
-        [Route("FindUser")]
-        public ActionResult<List<Student>> FindUser(string userName)
+        [Route("Find")]
+        public ActionResult<List<Student>> Find(string userName)
         {
             if (userName == null)
             {
@@ -109,6 +117,33 @@ namespace uadec.Controllers
             s.LastName.IsEqualTo(userName) ||
             s.LastNameMother.IsEqualTo(userName))).ToList();
 
+            var parameters = new SqlParameter[] {
+                    new SqlParameter("@clientId", userName)
+                 };
+
+            var f = DbContext.UserSP.FromSql("GetUserByName @clientId", parameters).ToList();
+            return usersFound;
+        }
+
+        /// <summary>
+        /// Find student name, uses SP
+        /// </summary>
+        /// <param name="userName"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("FindLike")]
+        public ActionResult<List<UserModel>> FindLike(string userName)
+        {
+            if (userName == null)
+            {
+                return NotFound();
+            }
+
+            var parameters = new SqlParameter[] {
+                new SqlParameter("@clientId", userName)
+            };
+
+            var usersFound = DbContext.UserSP.FromSql("GetUserByName @clientId", parameters).ToList();
             return usersFound;
         }
     }
