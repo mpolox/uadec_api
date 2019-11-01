@@ -21,12 +21,12 @@ CREATE PROCEDURE [dbo].[GetUserByName]
 )
 AS
 BEGIN
-	SELECT s.Id AS Id,
-	s.Name AS FirstName,
-	s.LastName AS LastName,
-	s.LastNameMother AS  LastNameMother
-	FROM Students s
-	WHERE s.Name LIKE '%'+ @ClientId + '%'
+	SELECT p.Id AS Id,
+	p.Name AS FirstName,
+	p.LastName AS LastName,
+	p.LastNameMother AS  LastNameMother
+	FROM People p
+	WHERE p.Name LIKE '%'+ @ClientId + '%'
 END
 GO
 

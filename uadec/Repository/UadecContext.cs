@@ -14,8 +14,18 @@ namespace uadec.Repository
         {
         }
 
+        #region Models
         public DbSet<Subject> Subjects { get; set; }
-        public DbSet<Person> People { get; set; }
+        public DbSet<User> Users { get; set; }
+        public DbSet<Student> Students { get; set; }
+        #endregion Models
+
+
+        #region DbQueries
         public DbQuery<UserModel> UserSP { get; set; }
+        #endregion DbQueries
+
+
+
     }
 }

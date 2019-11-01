@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace uadec.Models
 {
-    public class Person
+    public class User
     {
         public int Id { get; set; }
 
@@ -17,6 +17,8 @@ namespace uadec.Models
 
         public string LastNameMother { get; set; }
 
+        [Required]
+        [StringLength(150, MinimumLength = 10)]
         public string Email { get; set; }
 
         public string Phone { get; set; }

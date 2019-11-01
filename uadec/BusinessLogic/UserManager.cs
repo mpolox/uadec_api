@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace uadec.BusinessLogic
 {
-    public static class StudentsManager
+    public static class UserManager
     {
         public static bool GetSuperError(int id)
         {
@@ -22,6 +22,11 @@ namespace uadec.BusinessLogic
         public static bool IsEqualTo(this string str1, string str2)
         {
             if (str1 == null)
+            {
+                return false;
+            }
+
+            if (str2 == null)
             {
                 return false;
             }

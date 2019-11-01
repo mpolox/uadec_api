@@ -18,8 +18,8 @@ namespace uadec.Controllers
 
     public class SubjectController : ControllerBase
     {
-        protected readonly ILogger Logger;
-        protected readonly UadecContext DbContext;
+        private protected readonly ILogger Logger;
+        private protected readonly UadecContext DbContext;
 
         /// <summary>
         /// Subject Constructor
