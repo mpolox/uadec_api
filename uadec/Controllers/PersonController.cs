@@ -17,22 +17,18 @@ namespace uadec.Controllers
     /// <summary>
     /// Student Controller
     /// </summary>
-    [Route("student")]
+    [Route("person")]
     [ApiController]
     [CustomExceptionFilter] //Filter to handle controller exceptions
 
     
-    public class StudentController : ControllerBase
+    public class PersonController : ControllerBase
     {
         protected readonly ILogger Logger;
         protected readonly UadecContext DbContext;
 
-        /// <summary>
-        /// Controller construstor
-        /// </summary>
-        /// <param name="logger"></param>
-        /// <param name="dbContext"></param>
-        public StudentController(ILogger<StudentController> logger, UadecContext dbContext)
+
+        public PersonController(ILogger<PersonController> logger, UadecContext dbContext)
         {
             Logger = logger;
             DbContext = dbContext;
@@ -44,10 +40,10 @@ namespace uadec.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("All")]
-        public ActionResult<List<Student>> GetAll()
-        {            
-            List<Student> allStudents = DbContext.Students.ToList();
-            return allStudents;
+        public ActionResult<List<Person>> GetAll()
+        {
+            List<Person> allPersons = DbContext.People.ToList();
+            return allPersons;
         }
 
         /// <summary>
@@ -56,7 +52,7 @@ namespace uadec.Controllers
         /// <param name="model"></param>
         /// <returns></returns>
         [HttpPost]
-        public ActionResult<Student> Add(Student model)
+        public ActionResult<Person> Add(Person model)
         {
             if (model.Name == null)
             {
@@ -73,7 +69,7 @@ namespace uadec.Controllers
         /// <param name="model"></param>
         /// <returns></returns>
         [HttpPut]
-        public ActionResult<Student> Update(Student model)
+        public ActionResult<Person> Update(Person model)
         {
             DbContext.Entry(model).State = EntityState.Modified;
             DbContext.SaveChanges();
@@ -86,14 +82,14 @@ namespace uadec.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpDelete]
-        public ActionResult<Student> Delete(int id)
+        public ActionResult<Person> Delete(int id)
         {
-            Student deleteModel = DbContext.Students.Find(id);
+            Person deleteModel = DbContext.People.Find(id);
             if (deleteModel == null)
             {
                 return NotFound();
             }
-            DbContext.Students.Remove(deleteModel);
+            DbContext.People.Remove(deleteModel);
             DbContext.SaveChanges();
             return deleteModel;
         }
@@ -105,14 +101,14 @@ namespace uadec.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("Find")]
-        public ActionResult<List<Student>> Find(string userName)
+        public ActionResult<List<Person>> Find(string userName)
         {
             if (userName == null)
             {
                 return NotFound();
             }
 
-            List<Student> usersFound = DbContext.Students.Where(s => 
+            List<Person> usersFound = DbContext.People.Where(s =>
             (s.Name.IsEqualTo(userName) ||
             s.LastName.IsEqualTo(userName) ||
             s.LastNameMother.IsEqualTo(userName))).ToList();
@@ -146,5 +142,44 @@ namespace uadec.Controllers
             var usersFound = DbContext.UserSP.FromSql("GetUserByName @clientId", parameters).ToList();
             return usersFound;
         }
+
+        //[HttpPost]
+        //[Route("ToParent")]
+        //public ActionResult<bool> LinkToParent(int studentId, int parentId)
+        //{
+        //    Student student = DbContext.Students.Find(studentId);
+        //    Parent parent = DbContext.Parents.Find(parentId);
+
+        //    if (student == null || parent == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    bool alreadyExists = DbContext.StudentParents.Any(sp => sp.StudentId == studentId && sp.ParentId == parentId);
+        //    if (alreadyExists)
+        //    {
+        //        return BadRequest("Already defined");
+        //    }
+
+        //    StudentParent newModel = new StudentParent
+        //    {
+        //        ParentId = parentId,
+        //        StudentId = studentId
+        //    };
+
+        //    DbContext.Add(newModel);
+        //    DbContext.SaveChanges();
+
+        //    return true;
+        //}
+
+        //[HttpGet]
+        //[Route("ParentId")]
+        //public ActionResult<List<Student>> GetByParentId(int parentId)
+        //{
+        //    List<Student> students = DbContext.StudentParents.Where(s => s.ParentId == parentId).Select(s => s.Student).ToList();
+        //    students.OrderBy(s => s.Name);
+        //    return students;
+        //}
     }
 }

@@ -14,11 +14,8 @@ namespace uadec.Repository
         {
         }
 
-        public DbSet<Student> Students { get; set; }
-        public DbSet<Teacher> Teachers { get; set; }
         public DbSet<Subject> Subjects { get; set; }
-        public DbSet<Parent> Parents { get; set; }
-
+        public DbSet<Person> People { get; set; }
         public DbQuery<UserModel> UserSP { get; set; }
     }
 }

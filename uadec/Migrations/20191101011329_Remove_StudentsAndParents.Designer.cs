@@ -2,15 +2,17 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using uadec.Repository;
 
 namespace uadec.Migrations
 {
     [DbContext(typeof(UadecContext))]
-    partial class UadecContextModelSnapshot : ModelSnapshot
+    [Migration("20191101011329_Remove_StudentsAndParents")]
+    partial class Remove_StudentsAndParents
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -33,11 +35,29 @@ namespace uadec.Migrations
                     b.Property<string>("Name")
                         .IsRequired();
 
+                    b.Property<int>("PersonTypeId");
+
                     b.Property<string>("Phone");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("PersonTypeId");
+
                     b.ToTable("People");
+                });
+
+            modelBuilder.Entity("uadec.Models.PersonType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name")
+                        .IsRequired();
+
+                    b.HasKey("Id");
+
+                    b.ToTable("PersonTypes");
                 });
 
             modelBuilder.Entity("uadec.Models.Subject", b =>
@@ -53,6 +73,14 @@ namespace uadec.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Subjects");
+                });
+
+            modelBuilder.Entity("uadec.Models.Person", b =>
+                {
+                    b.HasOne("uadec.Models.PersonType", "PersonType")
+                        .WithMany()
+                        .HasForeignKey("PersonTypeId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
         }
