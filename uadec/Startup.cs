@@ -18,8 +18,8 @@ namespace uadec
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            var connection = @"Data Source=US1233165W2\SQLSERVER;Initial Catalog=uadec;Integrated Security=True;Connect Timeout=30;";
-            //var connection = @"Data Source=(localdb)\ProjectsV13;Initial Catalog=uadec;Integrated Security=True;Connect Timeout=30;";
+            //var connection = @"Data Source=US1233165W2\SQLSERVER;Initial Catalog=uadec;Integrated Security=True;Connect Timeout=30;";
+            var connection = @"Data Source=(localdb)\ProjectsV13;Initial Catalog=uadec;Integrated Security=True;Connect Timeout=30;";
 
             services.AddMvc();
 

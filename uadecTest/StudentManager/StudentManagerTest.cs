@@ -1,13 +1,72 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using uadec.BusinessLogic;
+using uadec.Controllers;
+using uadec.Models;
+using uadec.Repository;
 using Xunit;
 
 namespace uadecTest.StudentManager
 {
     public class StudentManagerTest
     {
+        public UadecContext Context { get; set; }
+        public UserController userController;
+
+        const int ZERO = 0;
+        User USER_01 = new User
+        {
+            Email = "test@123.com",
+            Name = "Marcopolo",
+            LastName = "Ramos",
+            LastNameMother = "Peña",
+            Phone = "3216549870"
+        };
+        User USER_02 = new User
+        {
+            Email = "test2@123.com",
+            Name = "Marcopolo2",
+            LastName = "Ramos2",
+            LastNameMother = "Peña2",
+            Phone = "32165498702"
+        };
+
+        public StudentManagerTest()
+        {
+            /* Create a Memory Database instead of using the SQL */
+            var options = new DbContextOptionsBuilder<UadecContext>().UseInMemoryDatabase(databaseName: "database_name").Options;
+
+            Context = new UadecContext(options);
+            userController = new UserController(null, Context);
+        }
+
+        private bool AddUser(User user)
+        {
+            var response = userController.Add(user);
+            Assert.NotNull(response);
+            Assert.True(response.Value.Id > ZERO);
+            return true;
+        }
+
+        private bool DeleteUser(User user)
+        {
+            var response = userController.Delete(user.Id);
+            Assert.Equal(response.Value.Email, user.Email);
+            Assert.Equal(response.Value.Name, user.Name);
+            return true;
+        }
+
+        private bool CheckEmpty()
+        {
+            var responseAll = userController.GetAll();
+            Assert.Empty(responseAll.Value);
+            return true;
+        }
+
+        #region TESTS
         [Fact]
         public void EqualNamesTest()
         {
@@ -41,5 +100,42 @@ namespace uadecTest.StudentManager
             Assert.False(compareString.IsEqualTo(expectedString_04));
             Assert.False(compareString.IsEqualTo(expectedString_05));
         }
+
+        [Fact]
+        public void UserController_AddNull()
+        {
+            var response = userController.Add(null);            
+            Assert.IsType<BadRequestObjectResult>(response.Result);
+        }
+
+        [Fact]
+        public void UserController_Add()
+        {
+            //Test
+            Assert.True(AddUser(USER_01));
+
+            //Restore system
+            Assert.True(DeleteUser(USER_01));
+            Assert.True(CheckEmpty());
+        }
+
+        [Fact]
+        public void UserController_GetAll()
+        {
+            //Preparation
+            Assert.True(AddUser(USER_01));
+            Assert.True(AddUser(USER_02));
+
+            //Test
+            var result = userController.GetAll();
+            Assert.NotEmpty(result.Value);
+
+            //Restore system
+            Assert.True(DeleteUser(USER_01));
+            Assert.True(DeleteUser(USER_02));
+            Assert.True(CheckEmpty());
+        }
+
+        #endregion TESTS
     }
 }

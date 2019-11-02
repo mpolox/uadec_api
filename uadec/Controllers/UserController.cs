@@ -35,7 +35,7 @@ namespace uadec.Controllers
         }
 
         /// <summary>
-        /// Get all students
+        /// Get all users
         /// </summary>
         /// <returns></returns>
         [HttpGet]
@@ -47,7 +47,7 @@ namespace uadec.Controllers
         }
 
         /// <summary>
-        /// Add a student
+        /// Add a user
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
@@ -72,7 +72,7 @@ namespace uadec.Controllers
         }
 
         /// <summary>
-        /// Update a student
+        /// Update a user
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
@@ -85,7 +85,7 @@ namespace uadec.Controllers
         }
 
         /// <summary>
-        /// Delete a student
+        /// Delete a user
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
@@ -103,7 +103,7 @@ namespace uadec.Controllers
         }
 
         /// <summary>
-        /// Find student
+        /// Find user
         /// </summary>
         /// <param name="userName"></param>
         /// <returns></returns>
@@ -121,16 +121,11 @@ namespace uadec.Controllers
             s.LastName.IsEqualTo(userName) ||
             s.LastNameMother.IsEqualTo(userName))).ToList();
 
-            var parameters = new SqlParameter[] {
-                    new SqlParameter("@clientId", userName)
-                 };
-
-            var f = DbContext.UserSP.FromSql("GetUserByName @clientId", parameters).ToList();
             return usersFound;
         }
 
         /// <summary>
-        /// Find student name, uses SP
+        /// Find user name, uses SP
         /// </summary>
         /// <param name="userName"></param>
         /// <returns></returns>
@@ -150,36 +145,5 @@ namespace uadec.Controllers
             var usersFound = DbContext.UserSP.FromSql("GetUserByName @clientId", parameters).ToList();
             return usersFound;
         }
-
-        //[HttpPost]
-        //[Route("ToParent")]
-        //public ActionResult<bool> LinkToParent(int studentId, int parentId)
-        //{
-        //    Student student = DbContext.Students.Find(studentId);
-        //    Parent parent = DbContext.Parents.Find(parentId);
-
-        //    if (student == null || parent == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    bool alreadyExists = DbContext.StudentParents.Any(sp => sp.StudentId == studentId && sp.ParentId == parentId);
-        //    if (alreadyExists)
-        //    {
-        //        return BadRequest("Already defined");
-        //    }
-
-        //    StudentParent newModel = new StudentParent
-        //    {
-        //        ParentId = parentId,
-        //        StudentId = studentId
-        //    };
-
-        //    DbContext.Add(newModel);
-        //    DbContext.SaveChanges();
-
-        //    return true;
-        //}
-
     }
 }

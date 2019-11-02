@@ -10,7 +10,14 @@ namespace uadec.Repository
 {
     public class UadecContext : DbContext
     {
-        public UadecContext(DbContextOptions options) : base(options)
+        private DbContextOptions<UadecContext> options;
+
+        //public UadecContext(DbContextOptions<UadecContext> options)
+        //{
+        //    this.options = options;
+        //}
+
+        public UadecContext(DbContextOptions<UadecContext> options) : base(options)
         {
         }
 
