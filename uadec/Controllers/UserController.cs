@@ -79,7 +79,14 @@ namespace uadec.Controllers
         [HttpPut]
         public ActionResult<User> Update(User model)
         {
-            DbContext.Entry(model).State = EntityState.Modified;
+            User foundModel = DbContext.Users.Find(model.Id);
+            //implement mapping
+            foundModel.Email = model.Email;
+            foundModel.Name = model.Name;
+            foundModel.LastName = model.LastName;
+            foundModel.LastNameMother = model.LastNameMother;
+            foundModel.Phone = model.Phone;
+ 
             DbContext.SaveChanges();
             return model;
         }

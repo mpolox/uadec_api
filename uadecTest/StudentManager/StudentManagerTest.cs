@@ -134,13 +134,22 @@ namespace uadecTest.StudentManager
         }
 
         [Fact]
-        public void UserController_Udate()
+        public void UserController_Update()
         {
             //Preparation
             Assert.True(AddUser(USER_01));
 
             //Test
-            var result = userController.
+            User newUser = new User{
+                Id=1,
+                Email="updated@mail.com",
+                Name="updated_marcopolo",
+                LastName = "updated_ramos",
+                LastNameMother="updated_peña",
+                Phone="updated_phone"
+            };
+            var result = userController.Update(newUser);
+            Assert.Equal(newUser, result.Value);
         }
         #endregion
     }
