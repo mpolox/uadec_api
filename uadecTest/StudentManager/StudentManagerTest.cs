@@ -11,9 +11,9 @@ using Xunit;
 
 namespace uadecTest.StudentManager
 {
-    public class StudentManagerTest
+    public class StudentManagerTest : IDisposable
     {
-        public UadecContext Context { get; set; }
+        public UadecContext uadecContext { get; set; }
         public UserController userController;
 
         const int ZERO = 0;
@@ -39,8 +39,13 @@ namespace uadecTest.StudentManager
             /* Create a Memory Database instead of using the SQL */
             var options = new DbContextOptionsBuilder<UadecContext>().UseInMemoryDatabase(databaseName: "database_name").Options;
 
-            Context = new UadecContext(options);
-            userController = new UserController(null, Context);
+            uadecContext = new UadecContext(options);
+            userController = new UserController(null, uadecContext);
+        }
+
+        public void Dispose()
+        {
+            uadecContext.Database.EnsureDeleted();
         }
 
         private bool AddUser(User user)
@@ -65,8 +70,7 @@ namespace uadecTest.StudentManager
             Assert.Empty(responseAll.Value);
             return true;
         }
-
-        #region TESTS
+        #region Business Tests
         [Fact]
         public void EqualNamesTest()
         {
@@ -100,7 +104,9 @@ namespace uadecTest.StudentManager
             Assert.False(compareString.IsEqualTo(expectedString_04));
             Assert.False(compareString.IsEqualTo(expectedString_05));
         }
+        #endregion
 
+        #region User Controller Tests
         [Fact]
         public void UserController_AddNull()
         {
@@ -113,10 +119,6 @@ namespace uadecTest.StudentManager
         {
             //Test
             Assert.True(AddUser(USER_01));
-
-            //Restore system
-            Assert.True(DeleteUser(USER_01));
-            Assert.True(CheckEmpty());
         }
 
         [Fact]
@@ -129,13 +131,17 @@ namespace uadecTest.StudentManager
             //Test
             var result = userController.GetAll();
             Assert.NotEmpty(result.Value);
-
-            //Restore system
-            Assert.True(DeleteUser(USER_01));
-            Assert.True(DeleteUser(USER_02));
-            Assert.True(CheckEmpty());
         }
 
-        #endregion TESTS
+        [Fact]
+        public void UserController_Udate()
+        {
+            //Preparation
+            Assert.True(AddUser(USER_01));
+
+            //Test
+            var result = userController.
+        }
+        #endregion
     }
 }
